@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Application</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .openai-label {
+      position: fixed;
+      top: 16px;
+      right: 24px;
+      background: #fff;
+      color: #10a37f;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      padding: 6px 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      z-index: 1000;
+      letter-spacing: 1px;
+      font-size: 16px;
+      border: 1px solid #10a37f;
+      cursor: pointer;
+    }
+    body {
+      position: relative;
+      /* ...existing code... */
+    }
+  </style>
+</head>
+<body>
+  <div class="openai-label" id="openai-label">OpenAI</div>
+  <ul class="pages">
+    <li class="chat page">
+      <div class="chatArea">
+        <ul class="messages"></ul>
+      </div>
+      <input class="inputMessage" placeholder="Type here..."/>
+    </li>
+    <li class="login page">
+      <div class="form">
+        <h3 class="title">What's your nickname?</h3>
+        <input class="usernameInput" type="text" maxlength="14" />
+      </div>
+    </li>
+  </ul>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/main.js"></script>
+  <script>
+    document.getElementById('openai-label').onclick = function() {
+      // Only add AI message if chat page is visible
+      var chatPage = document.querySelector('.chat.page');
+      if (chatPage && chatPage.offsetParent !== null) {
+        var $messages = $('.messages');
+        var $aiMsg1 = $('<li class="message ai"><span class="username" style="color:#10a37f;">AI</span>: <span class="messageBody">Wait, I will check if there is someone or not...</span></li>');
+        $messages.append($aiMsg1);
+        $messages[0].scrollTop = $messages[0].scrollHeight;
+        setTimeout(function() {
+          var $aiMsg2 = $('<li class="message ai"><span class="username" style="color:#10a37f;">AI</span>: <span class="messageBody">There is no one to chat with you.</span></li>');
+          $messages.append($aiMsg2);
+          $messages[0].scrollTop = $messages[0].scrollHeight;
+        }, 1200);
+      }
+    };
+  </script>
+</body>
+</html>
